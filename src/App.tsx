@@ -5,10 +5,12 @@ import SignIn from './components/pages/SignIn'
 import { Route, Routes } from 'react-router'
 import { Link, BrowserRouter as Router } from 'react-router-dom'
 
+import Todo from './components/Todo'
+
 function App() {
   return (
     <div>
-      <Router>
+      {/* <Router>
         <nav>
           <Link to="/">Home</Link>
           <Link to="/signin">signin</Link>
@@ -19,7 +21,9 @@ function App() {
           <Route path='/signin' element={<SignIn />}></Route>
           <Route path='/signup' element={<SignUp />}></Route>
         </Routes>
-      </Router>
+      </Router> */}
+
+      <Todo />
     </div>
   );
 }
