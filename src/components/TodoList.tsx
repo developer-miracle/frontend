@@ -2,19 +2,27 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { ITodoItem } from '../models'
 import TodoItem from './TodoItem'
-
-
-interface TodoListProps {
-    todos: ITodoItem[]
-}
+import { TodoListProps } from '../models'
 
 const TodoList = (props: TodoListProps) => {
     return (
-        <ul>
-            {props.todos.map((todo, index) => {
-                return <TodoItem todo={todo} key={todo.id as React.Key} index={++index} />
-            })}
-        </ul>
+        <>
+            {props.todos.length ?
+                <ul>
+                    {props.todos.map((todo, index) => {
+                        return <TodoItem
+                            todo={todo}
+                            key={todo.id as React.Key}
+                            index={++index}
+                            changeCompleted={props.changeCompleted}
+                        />
+                    })}
+
+                </ul>
+                :
+                <span>Список пуст</span>
+            }
+        </>
     )
 }
 

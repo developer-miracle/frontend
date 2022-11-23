@@ -1,13 +1,9 @@
-import React from 'react'
+import React, { MouseEventHandler, useContext } from 'react'
 import { ITodoItem } from '../models'
-
 import dayjs from 'dayjs'
-
-
-interface TodoItemProps {
-    todo: ITodoItem,
-    index: Number
-}
+import './TodoItem.css'
+import Context from '../context'
+import { AppContextInterface, TodoItemProps } from '../models'
 
 const styles = {
     li: {
@@ -27,12 +23,10 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-
-
     },
     title: {
         fontSize: 'x-large',
-        fontWeight: '600'
+        fontWeight: '600',
     },
     text: {
 
@@ -49,7 +43,6 @@ const styles = {
         borderRadius: '4px',
         color: '#fff',
         marginRight: '10px',
-
     },
     deleteButton: {
         backgroundColor: '#DE8383',
@@ -65,29 +58,35 @@ const styles = {
     },
     date: {
         margin: '0 10px'
-    }
+    },
 }
 
 function TodoItem(props: TodoItemProps) {
     let todo = props.todo
+    const deleteTodoContext = useContext<AppContextInterface | null>(Context)?.deleteTodo
+    function deleteTodo(id: Number): void {
+        if (deleteTodoContext) deleteTodoContext(id)
+    }
 
     let day = todo.date.diff(dayjs(), 'day')
 
-
-
+    const classes = []
+    if (todo.completed) {
+        classes.push('completed')
+    }
 
     return (
         <li style={styles.li}>
             <div style={styles.titleContainer}>
                 {/* <div>{props.index.toString()}</div> */}
                 <div style={styles.checkbox}>
-                    <input type="checkbox" />
-                    <div style={styles.title}>{todo.title}</div>
+                    <input type="checkbox" checked={todo.completed as boolean} onChange={() => props.changeCompleted(todo.id)} />
+                    <div className={classes.join(' ')} style={styles.title}>{todo.title}</div>
                 </div>
                 <div style={styles.buttons}>
                     <div style={styles.date}>Дата: {todo.date.format('DD/MM/YYYY')}</div>
                     <button style={styles.editButton}>редактировать</button>
-                    <button style={styles.deleteButton}>&times;</button>
+                    <button onClick={() => deleteTodo(todo.id)} style={styles.deleteButton}>&times;</button>
                 </div>
             </div>
             <div style={styles.container as React.CSSProperties}>

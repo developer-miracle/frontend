@@ -6,7 +6,7 @@ import 'dayjs/locale/ru'
 export const todos: ITodoItem[] = [
     {
         id: 1,
-        completed: false,
+        completed: true,
         title: 'Купить стол',
         text: 'Стол продается в другом конце города',
         date: dayjs('2022-12-31').locale('ru'),

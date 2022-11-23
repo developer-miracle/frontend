@@ -9,4 +9,22 @@ export interface ITodoItem {
     file: String // FIXME: Заменить на ФАЙЛ
 }
 
-interface ITodoItemArray extends Array<ITodoItem> { }
+export interface ITodoItemArray extends Array<ITodoItem> { }
+
+export interface AppContextInterface {
+    // name: string;
+    // author: string;
+    // url: string;
+    deleteTodo: (id: Number) => void | null
+}
+
+export interface TodoItemProps {
+    todo: ITodoItem,
+    index: Number,
+    changeCompleted: (id: Number) => void
+}
+
+export interface TodoListProps {
+    todos: ITodoItem[],
+    changeCompleted: (id: Number) => void
+}
