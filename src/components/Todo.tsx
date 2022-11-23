@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react'
 import TodoList from './TodoList'
 import { todos } from '../todos'
 import Context from '../context'
+import dayjs, { Dayjs } from 'dayjs'
+import AddTodo from './AddTodo'
+import utc from 'dayjs/plugin/utc'
+import 'dayjs/locale/ru'
+
 
 const styles = {
     root: {
@@ -9,27 +14,14 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    inputContainer: {
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    formContainer: {
-
     }
 }
 
-function submitForm(event: React.FormEvent) {
-    event.preventDefault()
-    console.log('event')
-}
-
-
-
 function Todo() {
+    dayjs.extend(utc)
+    dayjs.locale('ru')
     const [todoState, setTodoState] = useState(todos)
-    const [file, setFile] = useState<File | null>();
-    const [img, setImg] = useState(<></>);
+    const [dateTime, setDateTime] = useState<dayjs.Dayjs>(dayjs)
 
     function changeCompleted(id: Number): void {
         setTodoState(todoState.map(todo => {
@@ -40,33 +32,41 @@ function Todo() {
         }))
     }
 
-    // useEffect(() => {
-    //     console.log(file)
-    //     setImg(<img src={file?.name as string} />)
-    // }, [file])
+    function appendTodo(title: string, description: string, date: dayjs.Dayjs, file: File) {
+        let id = todoState.length ? todoState[todoState.length - 1].id as number + 1 : 1
+        setTodoState(todoState.concat([{
+            id: id,
+            completed: false,
+            title,
+            description,
+            date,
+            file
+        }]))
+    }
 
     function deleteTodo(id: Number) {
         setTodoState(todoState.filter(todo => todo.id !== id))
     }
 
+    useEffect(() => {
+        const interval = setInterval(
+            () => setDateTime(dayjs()),
+            1000
+        );
+        return () => {
+            clearInterval(interval)
+        }
+    }, [])
+
     return (
-        <Context.Provider value={{ deleteTodo }}>
+        <Context.Provider value={{ deleteTodo, appendTodo }}>
             <div style={styles.root as React.CSSProperties}>
                 <h1>Todo</h1>
-                <form onSubmit={submitForm} style={styles.formContainer}>
-                    <div style={styles.inputContainer as React.CSSProperties}>
-                        <input type="text" />
-                        <input type="text" />
-                        <input type="file" onChange={(event) => {
-                            setFile(event.currentTarget.files?.item(0))
-                        }} />
-                    </div>
-                    <button type="submit">Подтвердить</button>
-                </form>
+                <span>Текущее время : {dateTime?.format('DD.MM.YYYY HH:mm:ss Z')}</span>
+                <AddTodo />
                 <TodoList todos={todoState} changeCompleted={changeCompleted} />
             </div>
         </Context.Provider>
-
     )
 }
 

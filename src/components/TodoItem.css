@@ -1,3 +1,6 @@
 .completed {
     text-decoration: line-through;
 }
+.time-is-up {
+    color: red !important;
+}

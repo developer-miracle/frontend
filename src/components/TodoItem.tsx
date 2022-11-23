@@ -13,10 +13,6 @@ const styles = {
         border: '1px solid rgba(0, 0, 0, .1)',
         borderRadius: '4px',
         marginBottom: '10px',
-        // display: 'flex',
-        // justifyContent: 'space-between',
-        // padding: '20px',
-        // alignItems: 'center'
         padding: '10px'
     },
     titleContainer: {
@@ -27,6 +23,7 @@ const styles = {
     title: {
         fontSize: 'x-large',
         fontWeight: '600',
+        userSelect: 'none'
     },
     text: {
 
@@ -57,8 +54,12 @@ const styles = {
         display: 'flex'
     },
     date: {
-        margin: '0 10px'
+        margin: '0 10px',
+        color: 'green'
     },
+    file: {
+        margin: '10px 0'
+    }
 }
 
 function TodoItem(props: TodoItemProps) {
@@ -68,32 +69,38 @@ function TodoItem(props: TodoItemProps) {
         if (deleteTodoContext) deleteTodoContext(id)
     }
 
-    let day = todo.date.diff(dayjs(), 'day')
+    function editTodo(id: Number) {
+        console.log('edit: ' + id)
+    }
 
-    const classes = []
+    const classTitle = []
     if (todo.completed) {
-        classes.push('completed')
+        classTitle.push('completed')
+    }
+
+    const classTime = []
+    let millsec = todo.date.diff(dayjs())
+    if (todo.date.diff(dayjs()) <= 0 && todo.completed !== true) {
+        classTime.push('time-is-up')
     }
 
     return (
         <li style={styles.li}>
             <div style={styles.titleContainer}>
-                {/* <div>{props.index.toString()}</div> */}
                 <div style={styles.checkbox}>
                     <input type="checkbox" checked={todo.completed as boolean} onChange={() => props.changeCompleted(todo.id)} />
-                    <div className={classes.join(' ')} style={styles.title}>{todo.title}</div>
+                    <div onClick={() => props.changeCompleted(todo.id)} className={classTitle.join(' ')} style={styles.title as React.CSSProperties}>{todo.title}</div>
                 </div>
                 <div style={styles.buttons}>
-                    <div style={styles.date}>Дата: {todo.date.format('DD/MM/YYYY')}</div>
-                    <button style={styles.editButton}>редактировать</button>
+                    <div className={classTime.join(' ')} style={styles.date}>Дата: {todo.date.format('DD.MM.YYYY HH:mm')}</div>
+                    <button onClick={() => editTodo(todo.id)} style={styles.editButton}>редактировать</button>
                     <button onClick={() => deleteTodo(todo.id)} style={styles.deleteButton}>&times;</button>
                 </div>
             </div>
             <div style={styles.container as React.CSSProperties}>
-                <div style={styles.text}>{todo.text}</div>
-                <div >Файл: {todo.file}</div>
+                <span style={styles.text}>{todo.description}</span>
+                {todo.file ? <div style={styles.file}><strong>Файл:</strong> {todo.file?.name}</div> : ''}
             </div>
-
         </li>
     )
 }

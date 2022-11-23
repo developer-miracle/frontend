@@ -1,12 +1,12 @@
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 
 export interface ITodoItem {
     id: Number,
     completed: Boolean,
-    title: String,
-    text: String,
+    title: string,
+    description: string,
     date: dayjs.Dayjs,
-    file: String // FIXME: Заменить на ФАЙЛ
+    file: File | null // FIXME: Заменить на ФАЙЛ
 }
 
 export interface ITodoItemArray extends Array<ITodoItem> { }
@@ -15,7 +15,9 @@ export interface AppContextInterface {
     // name: string;
     // author: string;
     // url: string;
-    deleteTodo: (id: Number) => void | null
+    deleteTodo: (id: Number) => void | null;
+    appendTodo: (title: string, decription: string, date: dayjs.Dayjs, file: File) => void | null;
+
 }
 
 export interface TodoItemProps {
