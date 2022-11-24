@@ -17,13 +17,19 @@ export interface AppContextInterface {
     // url: string;
     deleteTodo: (id: Number) => void | null;
     appendTodo: (title: string, decription: string, date: dayjs.Dayjs, file: File) => void | null;
-
+    closeModal: () => void;
+    openModalEditCallback: (id: Number) => void;
+    editTodo: (item: ITodoItem) => void;
 }
 
 export interface TodoItemProps {
     todo: ITodoItem,
     index: Number,
     changeCompleted: (id: Number) => void
+}
+
+export interface ModalProps {
+    item: ITodoItem | undefined
 }
 
 export interface TodoListProps {

@@ -65,12 +65,13 @@ const styles = {
 function TodoItem(props: TodoItemProps) {
     let todo = props.todo
     const deleteTodoContext = useContext<AppContextInterface | null>(Context)?.deleteTodo
+    const openModalEditCallbackContext = useContext<AppContextInterface | null>(Context)?.openModalEditCallback
     function deleteTodo(id: Number): void {
-        if (deleteTodoContext) deleteTodoContext(id)
+        deleteTodoContext && deleteTodoContext(id)
     }
 
-    function editTodo(id: Number,) {
-        console.log('edit: ' + id)
+    function editTodo(id: Number) {
+        openModalEditCallbackContext?.(id)
     }
 
     const classTitle = []
