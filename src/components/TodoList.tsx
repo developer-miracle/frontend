@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { ITodoItem } from '../models'
 import TodoItem from './TodoItem'
 import { TodoListProps } from '../models'
+import dayjs from 'dayjs'
 
 const TodoList = (props: TodoListProps) => {
+
+    const [dateTime, setDateTime] = useState<dayjs.Dayjs>(dayjs)
+    useEffect(() => {
+        const interval = setInterval(
+            () => setDateTime(dayjs()),
+            1000
+        );
+        return () => {
+            clearInterval(interval)
+        }
+    }, [])
+
+
     return (
         <>
             {props.todos.length ?

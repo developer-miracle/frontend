@@ -69,7 +69,7 @@ function TodoItem(props: TodoItemProps) {
         if (deleteTodoContext) deleteTodoContext(id)
     }
 
-    function editTodo(id: Number) {
+    function editTodo(id: Number,) {
         console.log('edit: ' + id)
     }
 
@@ -79,7 +79,6 @@ function TodoItem(props: TodoItemProps) {
     }
 
     const classTime = []
-    let millsec = todo.date.diff(dayjs())
     if (todo.date.diff(dayjs()) <= 0 && todo.completed !== true) {
         classTime.push('time-is-up')
     }
@@ -99,7 +98,12 @@ function TodoItem(props: TodoItemProps) {
             </div>
             <div style={styles.container as React.CSSProperties}>
                 <span style={styles.text}>{todo.description}</span>
-                {todo.file ? <div style={styles.file}><strong>Файл:</strong> {todo.file?.name}</div> : ''}
+                {todo.file ?
+                    <a href={window.URL.createObjectURL(todo.file)} download={todo.file.name}>
+                        <div style={styles.file}><strong>Файл:</strong> {todo.file?.name}</div>
+                    </a>
+                    : ''}
+
             </div>
         </li>
     )

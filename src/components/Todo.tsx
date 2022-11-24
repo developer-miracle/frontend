@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import TodoList from './TodoList'
 import { todos } from '../todos'
 import Context from '../context'
-import dayjs, { Dayjs } from 'dayjs'
 import AddTodo from './AddTodo'
-import utc from 'dayjs/plugin/utc'
-import 'dayjs/locale/ru'
+import dayjs from 'dayjs'
+import RealTime from './RealTime'
 
 
 const styles = {
@@ -18,10 +17,7 @@ const styles = {
 }
 
 function Todo() {
-    dayjs.extend(utc)
-    dayjs.locale('ru')
     const [todoState, setTodoState] = useState(todos)
-    const [dateTime, setDateTime] = useState<dayjs.Dayjs>(dayjs)
 
     function changeCompleted(id: Number): void {
         setTodoState(todoState.map(todo => {
@@ -48,21 +44,13 @@ function Todo() {
         setTodoState(todoState.filter(todo => todo.id !== id))
     }
 
-    useEffect(() => {
-        const interval = setInterval(
-            () => setDateTime(dayjs()),
-            1000
-        );
-        return () => {
-            clearInterval(interval)
-        }
-    }, [])
+
 
     return (
         <Context.Provider value={{ deleteTodo, appendTodo }}>
             <div style={styles.root as React.CSSProperties}>
                 <h1>Todo</h1>
-                <span>Текущее время : {dateTime?.format('DD.MM.YYYY HH:mm:ss Z')}</span>
+                <RealTime />
                 <AddTodo />
                 <TodoList todos={todoState} changeCompleted={changeCompleted} />
             </div>

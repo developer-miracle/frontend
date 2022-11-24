@@ -44,10 +44,7 @@ const AddTodo = () => {
             <div style={styles.inputContainer as React.CSSProperties}>
                 <input value={title} onChange={event => setTitle(event.target.value)} name="title" type="text" placeholder="Заголовок" />
                 <textarea value={description} onChange={event => setDescription(event.target.value)} name="description" placeholder="Описание" rows={4} />
-                <input value={date.format('YYYY-MM-DDTHH:mm')} onChange={event => {
-                    console.log(event.target.value)
-                    setDate(dayjs(event.target.value))
-                }} name="date" type="datetime-local" />
+                <input value={date.format('YYYY-MM-DDTHH:mm')} onChange={event => setDate(dayjs(event.target.value))} name="date" type="datetime-local" />
                 <input name="file" type="file" onChange={event => setFile(event.currentTarget.files?.item(0))} />
             </div>
             <button type="submit">Подтвердить</button>
