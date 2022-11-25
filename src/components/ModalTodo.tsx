@@ -77,10 +77,13 @@ const styles = {
     preview: {
         height: 'inherit',
         width: 'auto'
+    },
+    text: {
+        marginBottom: '10px'
     }
 }
 
-function ModalAddTodo(props: ModalProps) {
+function ModalTodo(props: ModalProps) {
     const closeModalContext = useContext<AppContextInterface | null>(Context)?.closeModal
     const appendTodo = useContext<AppContextInterface | null>(Context)?.appendTodo
     const editTodo = useContext<AppContextInterface | null>(Context)?.editTodo
@@ -134,8 +137,8 @@ function ModalAddTodo(props: ModalProps) {
 
     return <div style={styles.root as React.CSSProperties}>
         <div style={styles.box}>
-            {flagEdit ? <span>Редактирование задачи</span> : <span>Новая задача</span>}
             <form onSubmit={submitForm} style={styles.formContainer as React.CSSProperties}>
+                {flagEdit ? <span style={styles.text}>Редактирование задачи</span> : <span style={styles.text}>Новая задача</span>}
                 <div style={styles.inputContainer as React.CSSProperties}>
                     <input style={styles.title} value={title} onChange={event => setTitle(event.target.value)} name="title" type="text" placeholder="Заголовок" />
                     <textarea style={styles.description} value={description} onChange={event => setDescription(event.target.value)} name="description" placeholder="Описание" rows={4} />
@@ -155,4 +158,4 @@ function ModalAddTodo(props: ModalProps) {
     </div>
 }
 
-export default ModalAddTodo
+export default ModalTodo

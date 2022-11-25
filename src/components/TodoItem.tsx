@@ -1,5 +1,4 @@
-import React, { MouseEventHandler, useContext } from 'react'
-import { ITodoItem } from '../models'
+import React, { useContext } from 'react'
 import dayjs from 'dayjs'
 import './TodoItem.css'
 import Context from '../context'
@@ -24,9 +23,6 @@ const styles = {
         fontSize: 'x-large',
         fontWeight: '600',
         userSelect: 'none'
-    },
-    text: {
-
     },
     container: {
         display: 'flex',
@@ -98,7 +94,7 @@ function TodoItem(props: TodoItemProps) {
                 </div>
             </div>
             <div style={styles.container as React.CSSProperties}>
-                <span style={styles.text}>{todo.description}</span>
+                <span>{todo.description}</span>
                 {todo.file ?
                     <a href={window.URL.createObjectURL(todo.file)} download={todo.file.name}>
                         <div style={styles.file}><strong>Файл:</strong> {todo.file?.name}</div>

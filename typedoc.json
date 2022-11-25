@@ -1,0 +1,25 @@
+// typedoc.json
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "entryPoints": [
+        "./src/index.ts"
+    ],
+    "out": "doc",
+    "externalSymbolLinkMappings": {
+        // used by `class Foo extends Component {}`
+        "@types/react": {
+            "Component": "https://reactjs.org/docs/react-component.html"
+        },
+        // used by {@link react!Component}
+        "react": {
+            "Component": "https://reactjs.org/docs/react-component.html"
+        }, // used by {@link !Promise}
+        "global": {
+            "Promise": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+        },
+        // used by type Foo = Promise<string>
+        "typescript": {
+            "Promise": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+        }
+    }
+}

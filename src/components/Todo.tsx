@@ -3,7 +3,7 @@ import TodoList from './TodoList'
 import { todos } from '../todos'
 import Context from '../context'
 import dayjs from 'dayjs'
-import ModalAddTodo from './ModalAddTodo'
+import ModalTodo from './ModalTodo'
 import utc from 'dayjs/plugin/utc'
 import { ITodoItem } from '../models'
 
@@ -13,13 +13,43 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    ButtonContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+    },
+    button: {
+        backgroundColor: '#CCFFCC',
+        border: 0,
+        borderRadius: '4px',
+        color: '#000',
+        width: '200px',
+        height: '40px'
+    },
+    timeContainer: {
+        display: 'flex',
+        flexDirection: 'column',
     }
 }
 
+/**
+ * @description Компонент задач
+ */
 function Todo() {
+
     dayjs.extend(utc)
     dayjs.locale('ru')
-    const [todoState, setTodoState] = useState(todos)
+
+    const [todosState, setTodosState] = useState(todos)
     const [openModal, setOpenModal] = useState(false)
     const [dateTime, setDateTime] = useState<dayjs.Dayjs>(dayjs)
     const [itemforEdit, setItemforEdit] = useState<ITodoItem>()
@@ -34,8 +64,12 @@ function Todo() {
         }
     }, [])
 
+    /**
+     * @description Функция изменяет поле completed в массиве todosState
+     * @param {Number} id - Ид изменяемой задачи
+     */
     function changeCompleted(id: Number): void {
-        setTodoState(todoState.map(todo => {
+        setTodosState(todosState.map(todo => {
             if (todo.id === id) {
                 todo.completed = !todo.completed
             }
@@ -43,9 +77,16 @@ function Todo() {
         }))
     }
 
+    /**
+     * @description Функция добавляет новую задачу в массив todosState
+     * @param {string} title - Название задачи
+     * @param {string} description - Описание задачи
+     * @param {Dayjs} date - Дата выполнения задачи
+     * @param {File} file - Файл прикрепленный к задаче
+     */
     function appendTodo(title: string, description: string, date: dayjs.Dayjs, file: File) {
-        let id = todoState.length ? todoState[todoState.length - 1].id as number + 1 : 1
-        setTodoState(todoState.concat([{
+        let id = todosState.length ? todosState[todosState.length - 1].id as number + 1 : 1
+        setTodosState(todosState.concat([{
             id: id,
             completed: false,
             title,
@@ -55,27 +96,45 @@ function Todo() {
         }]))
     }
 
+    /**
+     * @description Функция удаляет задачу из массива todosState
+     * @param {Number} id - Ид удаляемой задачи
+     */
     function deleteTodo(id: Number) {
-        setTodoState(todoState.filter(todo => todo.id !== id))
+        setTodosState(todosState.filter(todo => todo.id !== id))
     }
 
+    /**
+     * @description Функция открывает модальное окно
+     */
     function openModalCallback() {
         setOpenModal(true)
     }
 
+    /**
+     * @description Функция закрывает модальное окно
+     */
     function closeModal() {
-        setItemforEdit(undefined)
+        setItemforEdit(undefined) // FIXME: перенести в другое место
         setOpenModal(false)
     }
 
+    /**
+     * @description Функция открывает модальное окно для редактирования задачи
+     * @param {Number} id - Ид редактируемой задачи
+     */
     function openModalEditCallback(id: Number) {
-        let item = todoState.find(item => item.id === id)
+        let item = todosState.find(item => item.id === id)
         if (item) setItemforEdit(item)
         setOpenModal(true)
     }
 
+    /**
+     * @description Функция изменяет существующую задачу из массива todosState
+     * @param {ITodoItem} item - Новый объект для замены
+     */
     function editTodo(item: ITodoItem) {
-        let todoArray = todoState;
+        let todoArray = todosState;
         let element = todoArray.find(element => element.id === item.id)
         if (element) {
             element.title = item.title;
@@ -83,19 +142,26 @@ function Todo() {
             element.date = item.date;
             element.file = item.file;
         }
-        setTodoState(todoArray)
+        setTodosState(todoArray)
     }
 
     return (
         <Context.Provider value={{ editTodo, deleteTodo, appendTodo, closeModal, openModalEditCallback }}>
-            <div style={styles.root as React.CSSProperties}>
-                <h1>Todo</h1>
-                <span>Текущее время : {dateTime?.format('DD.MM.YYYY HH:mm:ss Z')}</span>
-                {openModal ? <ModalAddTodo item={itemforEdit} /> : ''}
-                <button onClick={openModalCallback}>Добавить</button>
-                <TodoList todos={todoState} changeCompleted={changeCompleted} />
+            <div style={styles.container as React.CSSProperties}>
+                <div style={styles.root as React.CSSProperties}>
+                    <h1>Todo</h1>
+                    <div style={styles.ButtonContainer as React.CSSProperties}>
+                        <div style={styles.timeContainer as React.CSSProperties}>
+                            <span><strong>Текущее время :</strong></span>
+                            <span>{dateTime?.format('DD.MM.YYYY HH:mm:ss Z')}</span>
+                        </div>
+                        <button style={styles.button} onClick={openModalCallback}>Добавить</button>
+                    </div>
+                    <TodoList todos={todosState} changeCompleted={changeCompleted} />
+                    {openModal ? <ModalTodo item={itemforEdit} /> : ''}
+                </div>
             </div>
-        </Context.Provider>
+        </Context.Provider >
     )
 }
 

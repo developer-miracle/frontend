@@ -1,5 +1,5 @@
 {
-  "name": "react-typescript-template",
+  "name": "Todo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,7 +16,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "doc": "npx typedoc ./src"
   },
   "eslintConfig": {
     "extends": [
@@ -36,6 +37,6 @@
     ]
   },
   "devDependencies": {
-    "jsdoc": "^4.0.0"
+    "typedoc": "^0.23.21"
   }
 }
