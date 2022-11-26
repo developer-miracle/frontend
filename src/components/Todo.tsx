@@ -1,3 +1,6 @@
+/**
+ * @module TODO
+ */
 import React, { useEffect, useState } from 'react'
 import TodoList from './TodoList'
 import { todos } from '../todos'
@@ -40,12 +43,13 @@ const styles = {
         flexDirection: 'column',
     }
 }
-
 /**
- * @description Компонент задач
+ * @category Component
  */
 function Todo() {
-
+    /**
+     * Объявление чего-то там
+     */
     dayjs.extend(utc)
     dayjs.locale('ru')
 
