@@ -45,6 +45,7 @@ const styles = {
 }
 /**
  * @category Component
+ * @returns Created or existing
  */
 function Todo() {
     /**
@@ -71,6 +72,7 @@ function Todo() {
     /**
      * @description Функция изменяет поле completed в массиве todosState
      * @param {Number} id - Ид изменяемой задачи
+     * @returns Created or existing
      */
     function changeCompleted(id: Number): void {
         setTodosState(todosState.map(todo => {

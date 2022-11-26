@@ -3,9 +3,9 @@
     "$schema": "https://typedoc.org/schema.json",
     "name": "Document",
     "out": "doc",
-    "categorizeByGroup": false,
+    "categorizeByGroup": true,
     "excludeExternals": true,
-    "includeVersion": true,
+    "includeVersion": false,
     "entryPoints": [
         "src/components/*",
         "./src/*"
